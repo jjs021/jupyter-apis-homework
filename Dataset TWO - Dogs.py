@@ -7,7 +7,7 @@
 
 # ## Do your importing and your setup
 
-# In[96]:
+# In[1]:
 
 
 import pandas as pd
@@ -16,7 +16,7 @@ import numpy as np
 
 # ## Read in the file `NYC_Dog_Licenses_Current_as_of_4-28-2016.xlsx` and look at the first five rows
 
-# In[97]:
+# In[2]:
 
 
 df = pd.read_excel("NYC_Dog_Licenses_Current_as_of_4-28-2016.xlsx",index_col=0)
@@ -27,7 +27,7 @@ df.head(5)
 # 
 # If there are more than 30,000 rows in your dataset, go back and only read in the first 30,000.
 
-# In[98]:
+# In[3]:
 
 
 df.shape
@@ -37,13 +37,13 @@ df.shape
 # 
 # For example: “Each row is an animal in the zoo. `is_reptile` is whether the animal is a reptile or not”
 
-# In[99]:
+# In[4]:
 
 
 df.keys()
 
 
-# In[100]:
+# In[5]:
 
 
 #Each row is information of a dog with a license.
@@ -55,7 +55,7 @@ df.keys()
 # 
 # Think of four questions you could ask this dataset. **Don't ask them**, just write them down in the cell below. Feel free to use either Markdown or Python comments.
 
-# In[101]:
+# In[6]:
 
 
 #How many dogs have expired licenses.
@@ -67,7 +67,7 @@ df.keys()
 
 # ## What are the most popular (primary) breeds of dogs? Graph the top 10.
 
-# In[102]:
+# In[7]:
 
 
 df['Primary Breed'].value_counts().head(10)
@@ -75,14 +75,14 @@ df['Primary Breed'].value_counts().head(10)
 
 # ## "Unknown" is a terrible breed! Graph the top 10 breeds that are NOT Unknown
 
-# In[103]:
+# In[8]:
 
 
 df.drop(df[ df['Primary Breed'] == 'Unknown' ].index , inplace=True)
 df['Primary Breed'].value_counts().head(10).plot(kind="bar")
 
 
-# In[104]:
+# In[9]:
 
 
 df = pd.read_excel("NYC_Dog_Licenses_Current_as_of_4-28-2016.xlsx",index_col=0)
@@ -90,7 +90,7 @@ df = pd.read_excel("NYC_Dog_Licenses_Current_as_of_4-28-2016.xlsx",index_col=0)
 
 # ## What are the most popular dog names?
 
-# In[105]:
+# In[10]:
 
 
 df['Animal Name'].value_counts().head(11)
@@ -98,13 +98,13 @@ df['Animal Name'].value_counts().head(11)
 
 # ## Do any dogs have your name? How many dogs are named "Max," and how many are named "Maxwell"?
 
-# In[106]:
+# In[11]:
 
 
 df[df['Animal Name']=='Max'].count()
 
 
-# In[107]:
+# In[12]:
 
 
 df[df['Animal Name']=='Maxwell'].count()
@@ -114,7 +114,7 @@ df[df['Animal Name']=='Maxwell'].count()
 # 
 # Check out the documentation for [value counts](https://pandas.pydata.org/pandas-docs/stable/generated/pandas.Series.value_counts.html).
 
-# In[108]:
+# In[13]:
 
 
 df['Guard or Trained'].value_counts(normalize = True)
@@ -122,7 +122,7 @@ df['Guard or Trained'].value_counts(normalize = True)
 
 # ## What are the actual numbers?
 
-# In[109]:
+# In[14]:
 
 
 df['Guard or Trained'].value_counts()
@@ -132,7 +132,7 @@ df['Guard or Trained'].value_counts()
 # 
 # Use your `.head()` to think about it, then you'll do some magic with `.value_counts()`
 
-# In[110]:
+# In[15]:
 
 
 df[pd.isnull(df['Guard or Trained'])]['License Issued Date'].count()
@@ -142,7 +142,7 @@ df[pd.isnull(df['Guard or Trained'])]['License Issued Date'].count()
 # 
 # Then check your result with another `.value_counts()`
 
-# In[111]:
+# In[16]:
 
 
 df['Guard or Trained'] = df['Guard or Trained'].replace({np.nan:'No'})
@@ -151,7 +151,7 @@ df['Guard or Trained'].value_counts()
 
 # ## What are the top dog breeds for guard dogs? 
 
-# In[112]:
+# In[17]:
 
 
 df[df['Guard or Trained'] =="Yes"]['Primary Breed'].value_counts()
@@ -161,7 +161,7 @@ df[df['Guard or Trained'] =="Yes"]['Primary Breed'].value_counts()
 # 
 # The `Animal Birth` column is a datetime, so you can get the year out of it with the code `df['Animal Birth'].apply(lambda birth: birth.year)`.
 
-# In[117]:
+# In[18]:
 
 
 df['year'] = df['Animal Birth'].apply(lambda birth: birth.year)
@@ -169,7 +169,7 @@ df['year'] = df['Animal Birth'].apply(lambda birth: birth.year)
 
 # ## Calculate a new column called “age” that shows approximately how old the dog is. How old are dogs on average?
 
-# In[118]:
+# In[19]:
 
 
 df['age'] = 2021 - df['year']
@@ -182,27 +182,27 @@ df['age'].mean().round(2)
 # 
 # You also have a (terrible) list of NYC neighborhoods in `zipcodes-neighborhoods.csv`. Join these two datasets together, so we know what neighborhood each dog lives in. **Be sure to not read it in as `df`, or else you'll overwrite your dogs dataframe.**
 
-# In[119]:
+# In[20]:
 
 
 zip_df = pd.read_csv("zipcodes-neighborhoods.csv",index_col=0)
 zip_df.head()
 
 
-# In[128]:
+# In[21]:
 
 
 zip_df.reindex()
 zip_df.head()
 
 
-# In[131]:
+# In[22]:
 
 
 zip_df['neighborhood'] = zip_df.index
 
 
-# In[132]:
+# In[23]:
 
 
 zip_df.reindex()
@@ -213,19 +213,19 @@ merged_df.head()
 
 # ## What is the most popular dog name in all parts of the Bronx? How about Brooklyn? The Upper East Side?
 
-# In[135]:
+# In[24]:
 
 
 merged_df[merged_df.borough == 'Bronx' ]['Animal Name'].value_counts().head(1)
 
 
-# In[140]:
+# In[25]:
 
 
 merged_df[merged_df.borough == 'Brooklyn' ]['Animal Name'].value_counts().head(10)
 
 
-# In[142]:
+# In[26]:
 
 
 merged_df[merged_df.neighborhood == 'Upper East Side' ]['Animal Name'].value_counts().head(10)
@@ -233,13 +233,13 @@ merged_df[merged_df.neighborhood == 'Upper East Side' ]['Animal Name'].value_cou
 
 # ## What is the most common dog breed in each of the neighborhoods of NYC?
 
-# In[146]:
+# In[27]:
 
 
 merged_df.neighborhood.value_counts().shape
 
 
-# In[190]:
+# In[28]:
 
 
 merged_df.groupby(by='neighborhood')['Primary Breed'].value_counts().to_frame().groupby(by='neighborhood').head(2)
@@ -247,18 +247,49 @@ merged_df.groupby(by='neighborhood')['Primary Breed'].value_counts().to_frame().
 
 # ## What breed of dogs are the least likely to be spayed? Male or female?
 
-# In[ ]:
+# In[29]:
 
 
-
+merged_df.groupby(by = (['Primary Breed','Animal Gender']))['Spayed or Neut']
 
 
 # ## Make a new column called monochrome that is True for any animal that only has black, white or grey as one of its colors. How many animals are monochrome?
 
-# In[ ]:
+# In[39]:
 
 
+merged_df['monocolor'] = False
 
+#merged_df.head()
+
+
+# In[47]:
+
+
+merged_df['Animal Dominant Color']= merged_df['Animal Dominant Color'].str.upper()
+merged_df['Animal Secondary Color']= merged_df['Animal Secondary Color'].str.upper()
+merged_df['Animal Third Color']= merged_df['Animal Third Color'].str.upper()
+
+
+filter1 = merged_df['Animal Dominant Color'].isin(['BLACK', 'WHITE', 'GREY'])
+filter2 = merged_df['Animal Secondary Color'].isin(['BLACK', 'WHITE', 'GREY', np.nan])
+filter3 = merged_df['Animal Third Color'].isin(['BLACK', 'WHITE', 'GREY', np.nan])
+
+#merged_df.loc[merged_df[filter1 & filter2 & filter3], 'monocolor'] = True
+
+merged_df.loc[filter1 & filter2 & filter3 , 'monocolor']= True
+
+
+# In[49]:
+
+
+merged_df.head()
+
+
+# In[48]:
+
+
+merged_df['monocolor'].value_counts()
 
 
 # ## How many dogs are in each borough? Plot it in a graph.
@@ -266,7 +297,8 @@ merged_df.groupby(by='neighborhood')['Primary Breed'].value_counts().to_frame().
 # In[ ]:
 
 
-
+dog_population_df = pd.DataFrame(merged_df.groupby(by = 'borough')['Animal Name'].count())
+dog_population_df
 
 
 # ## Which borough has the highest number of dogs per-capita?
@@ -276,19 +308,32 @@ merged_df.groupby(by='neighborhood')['Primary Breed'].value_counts().to_frame().
 # In[ ]:
 
 
-
-
-
-# In[ ]:
-
-
-
+capita_df = pd.read_csv("boro_population.csv", index_col=0)
 
 
 # In[ ]:
 
 
+capita_df.head()
 
+
+# In[ ]:
+
+
+dog_man_pop_df=dog_population_df.merge(capita_df, left_on='borough', right_on='borough')
+
+
+# In[ ]:
+
+
+dog_man_pop_df
+
+
+# In[ ]:
+
+
+dog_man_pop_df['dog_per_capita'] = dog_man_pop_df['Animal Name']/dog_man_pop_df.population
+dog_man_pop_df.sort_values(by='dog_per_capita', ascending=False)
 
 
 # ## Make a bar graph of the top 5 breeds in each borough.
@@ -298,12 +343,12 @@ merged_df.groupby(by='neighborhood')['Primary Breed'].value_counts().to_frame().
 # In[ ]:
 
 
-
+merged_df.groupby(by='borough')['Primary Breed'].value_counts().to_frame().groupby(by='borough').head(5).plot(kind='bar', figsize=(20, 20),fontsize=25)
 
 
 # ## What percentage of dogs are not guard dogs?
 
-# In[1]:
+# In[ ]:
 
 
 round(0.998971*100, 2)
@@ -312,7 +357,14 @@ round(0.998971*100, 2)
 # In[ ]:
 
 
-
+#merged_df.groupby(by= 'monocolor')
+c_df = merged_df[['Animal Dominant Color', 'Animal Secondary Color', 'Animal Third Color']].isin({
+    'Animal Dominant Color': ['BLACK', 'WHITE', 'GREY', np.nan],
+    'Animal Secondary Color': ['BLACK', 'WHITE', 'GREY', np.nan],
+    'Animal Third Color': ['BLACK', 'WHITE', 'GREY', np.nan],
+})
+c_df
+#c_df[(c_df['Animal Dominant Color'] & c_df['Animal Secondary Color'] & c_df['Animal Third Color'])]
 
 
 # In[ ]:
